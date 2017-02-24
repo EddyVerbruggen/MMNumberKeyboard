@@ -1,4 +1,7 @@
 # MMNumberKeyboard
+
+> Tweaked by Eddy Verbruggen to make the iPad look more like the iPhone version (square buttons, no padding, a bit larger).
+
 A simple keyboard to use with numbers and, optionally, a decimal point.
 
 ![And it works great on the iPad too](https://github.com/matmartinez/MMNumberKeyboard/blob/master/UniversalScreenshot.png)
