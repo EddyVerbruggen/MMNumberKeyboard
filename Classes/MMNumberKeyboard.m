@@ -34,6 +34,7 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardButton) {
 
 // The style of the keyboard button.
 @property (assign, nonatomic) MMNumberKeyboardButtonStyle style;
+@property (strong, nonatomic) UIColor *returnKeyButtonBackgroundColor;
 
 // Notes the continuous press time interval, then adds the target/action to the UIControlEventValueChanged event.
 - (void)addTarget:(id)target action:(SEL)action forContinuousPressWithTimeInterval:(NSTimeInterval)timeInterval;
@@ -709,6 +710,11 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
     } else if (style == MMNumberKeyboardButtonStyleDone) {
         fillColor = [UIColor colorWithRed:0 green:0.479f blue:1 alpha:1];
         highlightedFillColor = [UIColor whiteColor];
+    }
+
+    // override with an (optional) explicitly set color
+    if (self.returnKeyButtonBackgroundColor != nil) {
+        fillColor = self.returnKeyButtonBackgroundColor;
     }
 
     UIColor *controlColor = nil;

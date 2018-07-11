@@ -138,4 +138,9 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardButtonStyle) {
  */
 @property (assign, nonatomic) MMNumberKeyboardButtonStyle returnKeyButtonStyle;
 
+/**
+ *  Override the Return key background color by this one.
+ */
+@property (copy, nonatomic) UIColor *returnKeyButtonBackgroundColor;
+
 @end
