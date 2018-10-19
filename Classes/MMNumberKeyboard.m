@@ -256,11 +256,11 @@ static const CGFloat MMNumberKeyboardWidth = 520.0f;
     // Handle backspace.
     else if (keyboardButton == MMNumberKeyboardButtonBackspace) {
         BOOL shouldDeleteBackward = YES;
-		
+
         if ([delegate respondsToSelector:@selector(numberKeyboardShouldDeleteBackward:)]) {
             shouldDeleteBackward = [delegate numberKeyboardShouldDeleteBackward:self];
         }
-		
+
         if (shouldDeleteBackward) {
             [keyInput deleteBackward];
         }
@@ -336,7 +336,7 @@ static const CGFloat MMNumberKeyboardWidth = 520.0f;
 - (void)_dismissKeyboard:(id)sender
 {
     id <UIKeyInput> keyInput = self.keyInput;
-    
+
     if ([keyInput isKindOfClass:[UIResponder class]]) {
         [(UIResponder *)keyInput resignFirstResponder];
     }
@@ -422,6 +422,18 @@ static const CGFloat MMNumberKeyboardWidth = 520.0f;
         _MMNumberKeyboardButton *button = self.buttonDictionary[@(MMNumberKeyboardButtonDone)];
         if (button) {
             button.style = style;
+        }
+    }
+}
+
+- (void)setReturnKeyButtonBackgroundColor:(UIColor*)color
+{
+    if (color != _returnKeyButtonBackgroundColor) {
+        _returnKeyButtonBackgroundColor = color;
+
+        _MMNumberKeyboardButton *button = self.buttonDictionary[@(MMNumberKeyboardButtonDone)];
+        if (button) {
+            button.returnKeyButtonBackgroundColor = color;
         }
     }
 }
@@ -690,6 +702,14 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
     }
 }
 
+- (void)setReturnKeyButtonBackgroundColor:(UIColor*)preferredBackgroundColor
+{
+    if (preferredBackgroundColor != _returnKeyButtonBackgroundColor) {
+        _returnKeyButtonBackgroundColor = preferredBackgroundColor;
+        self.fillColor = _returnKeyButtonBackgroundColor;
+    }
+}
+
 - (void)_buttonStyleDidChange
 {
     const UIUserInterfaceIdiom interfaceIdiom = UI_USER_INTERFACE_IDIOM();
@@ -750,7 +770,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
     [super willMoveToWindow:newWindow];
-    
+
     if (newWindow) {
         [self _updateButtonAppearance];
     }
@@ -770,7 +790,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];
-    
+
     [self _updateButtonAppearance];
 }
 
@@ -779,7 +799,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
 - (void)addTarget:(id)target action:(SEL)action forContinuousPressWithTimeInterval:(NSTimeInterval)timeInterval
 {
     self.continuousPressTimeInterval = timeInterval;
-    
+
     [self addTarget:target action:action forControlEvents:UIControlEventValueChanged];
 }
 
@@ -787,11 +807,11 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
 {
     BOOL begins = [super beginTrackingWithTouch:touch withEvent:event];
     const NSTimeInterval continuousPressTimeInterval = self.continuousPressTimeInterval;
-    
+
     if (begins && continuousPressTimeInterval > 0) {
         [self _beginContinuousPressDelayed];
     }
-    
+
     return begins;
 }
 
@@ -809,11 +829,11 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
 - (void)_beginContinuousPress
 {
     const NSTimeInterval continuousPressTimeInterval = self.continuousPressTimeInterval;
-    
+
     if (!self.isTracking || continuousPressTimeInterval == 0) {
         return;
     }
-    
+
     self.continuousPressTimer = [NSTimer scheduledTimerWithTimeInterval:continuousPressTimeInterval target:self selector:@selector(_handleContinuousPressTimer:) userInfo:nil repeats:YES];
 }
 
@@ -823,7 +843,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
         [self _cancelContinousPressIfNeeded];
         return;
     }
-    
+
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
@@ -835,11 +855,11 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
 - (void)_cancelContinousPressIfNeeded
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_beginContinuousPress) object:nil];
-    
+
     NSTimer *timer = self.continuousPressTimer;
     if (timer) {
         [timer invalidate];
-        
+
         self.continuousPressTimer = nil;
     }
 }
