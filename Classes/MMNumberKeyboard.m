@@ -474,7 +474,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
     const BOOL allowsDecimalPoint = self.allowsDecimalPoint;
 
     const CGFloat width = MIN(maximumWidth, CGRectGetWidth(bounds));
-    const CGRect contentRect = (CGRect){
+    CGRect contentRect = (CGRect){
         .origin.x = MMRound((CGRectGetWidth(bounds) - width) / 2.0f),
         .origin.y = spacing,
         .size.width = width,
