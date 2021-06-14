@@ -481,9 +481,11 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
         .size.height = CGRectGetHeight(bounds) - (spacing * 2.0f)
     };
 
+    contentRect = UIEdgeInsetsInsetRect(contentRect, self.safeAreaInsets);
+
     // Layout.
     const CGFloat columnWidth = CGRectGetWidth(contentRect) / 4.0f;
-    const CGFloat rowHeight = MMNumberKeyboardRowHeight;
+    const CGFloat rowHeight = CGRectGetHeight(contentRect) / MMNumberKeyboardRows;
 
     CGSize numberSize = CGSizeMake(columnWidth, rowHeight);
 
